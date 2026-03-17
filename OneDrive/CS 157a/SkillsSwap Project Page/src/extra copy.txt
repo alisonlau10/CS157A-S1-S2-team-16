@@ -1,0 +1,54 @@
+<%@ page import="java.sql.*"%>
+<html>
+<head>
+  <title>SkillSwap</title>
+</head>
+<body>
+<h1>A website where students provide services in exchange for other services. Free for all.</h1>
+
+<div class = "navbar">
+    <a href="main.jsp">Home</a>
+    <a href="login.jsp">Login</a>
+    <a href="register.jsp">Register</a>
+    <a href="listedSkills.jsp"><List of Skills</a>
+</div>
+
+<style>
+body{
+    background:
+}
+
+.navbar {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 2px solid #eee;
+    background: #F8C8DC;
+
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #2c7be5;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.navbar a:hover {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+</style>
+    <%
+     String db = "Lau";
+        String user; // assumes database name is the same as username
+          user = "root";
+        String password = "lapsap123#SQL";
+        try {
+
+        } catch(Exception e) {
+            out.println("Exception caught: " + e.getMessage());
+        }
+    %>
+</body>
+</html>
