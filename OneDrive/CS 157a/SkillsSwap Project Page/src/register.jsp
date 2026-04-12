@@ -1,0 +1,241 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    // Redirect to dashboard if already logged in
+    if (session.getAttribute("userId") != null) {
+        response.sendRedirect("dashboard.jsp");
+        return;
+    }
+    String error   = (String) request.getAttribute("error");
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SkillSwap Campus</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #FFF5EE;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 25px;
+            background: #F8C8DC;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+        .navbar .brand {
+            font-family: cursive;
+            font-size: 1.4rem;
+            color: #7a2d3b;
+            font-weight: 700;
+            margin-right: auto;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #2c7be5;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .navbar a:hover { background: rgba(255,255,255,0.6); }
+        .navbar a.active { background: rgba(255,255,255,0.8); color: #AA336A; }
+
+        /* ── Form container ── */
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 10px 20px 40px;
+        }
+        .form-card {
+            background: #fff;
+            border: 2px solid #F3CFC6;
+            border-radius: 20px;
+            padding: 40px 45px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 4px 20px rgba(170,51,106,0.08);
+        }
+        .form-title {
+            font-family: cursive;
+            font-size: 2rem;
+            color: #7a2d3b;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .form-subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+
+        /* ── Alerts ── */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .alert-error {
+            background: #fde8e8;
+            color: #c0392b;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* ── Form fields ── */
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        .required { color: #AA336A; }
+        .form-group input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+            background: #FFFAFA;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #F8C8DC;
+            background: #fff;
+        }
+        .form-hint {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 4px;
+        }
+
+        /* ── Divider ── */
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #AA336A;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 22px 0 14px;
+            border-bottom: 1px solid #F3CFC6;
+            padding-bottom: 6px;
+        }
+
+        /* ── Submit button ── */
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: #AA336A;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-submit:hover  { background: #8e2a58; }
+        .btn-submit:active { transform: scale(0.98); }
+
+        /* ── Footer link ── */
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        .form-footer a { color: #2c7be5; text-decoration: none; font-weight: bold; }
+        .form-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="brand">SkillSwap Campus</span>
+    <a href="SkillSwap.jsp">Home</a>
+    <a href="login.jsp">Login</a>
+    <a href="register.jsp" class="active">Register</a>
+    <a href="listOfSkills.jsp">Browse Skills</a>
+</nav>
+
+<div class="page-wrapper">
+    <div class="form-card">
+
+        <h2 class="form-title">Create Account</h2>
+        <p class="form-subtitle">Join SkillSwap Campus and start trading skills today!</p>
+
+        <% if (error != null) { %>
+            <div class="alert alert-error"><%= error %></div>
+        <% } %>
+
+        <form action="<%= request.getContextPath() %>/register" method="post" novalidate>
+
+            <div class="section-label">Account Info</div>
+
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName"
+                       placeholder="e.g. Jane Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">University Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email"
+                       placeholder="yourname@sjsu.edu" required>
+                <p class="form-hint">Must be a valid .edu address.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password <span class="required">*</span></label>
+                <input type="password" id="password" name="password"
+                       placeholder="Create a strong password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="major">Major</label>
+                <input type="text" id="major" name="major"
+                       placeholder="e.g. Computer Science">
+            </div>
+
+            <div class="section-label">Skills</div>
+
+            <div class="form-group">
+                <label for="skillsOffered">Skills I Can Offer</label>
+                <input type="text" id="skillsOffered" name="skillsOffered"
+                       placeholder="e.g. Python, Calculus, Guitar">
+                <p class="form-hint">Separate multiple skills with commas.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="skillsWanted">Skills I Want to Learn</label>
+                <input type="text" id="skillsWanted" name="skillsWanted"
+                       placeholder="e.g. Spanish, Graphic Design">
+                <p class="form-hint">Separate multiple skills with commas.</p>
+            </div>
+
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+
+        <p class="form-footer">
+            Already have an account? <a href="login.jsp">Log in here</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
