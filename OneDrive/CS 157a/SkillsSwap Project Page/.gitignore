@@ -28,3 +28,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### SkillSwap - local config (never commit passwords) ###
+WEB-INF/db.properties
+WEB-INF/classes/
+reset_mysql.sh

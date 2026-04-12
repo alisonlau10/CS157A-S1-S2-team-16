@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mysql-connector-j-9.6.0" level="project" />
+    <orderEntry type="library" name="tomcat-servlet-api" level="project" />
   </component>
 </module>
