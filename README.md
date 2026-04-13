@@ -1,2 +1,8 @@
 # CS157A-S1/S2-team-16
 Semester project for CS 157A
+
+SkillSwap Campus is a web-based platform designed to allow university students to exchange skills without the use of money. The system enables peer-to-peer learning through a structured skill-bartering model where students trade knowledge and abilities instead of making financial payments. Its primary goal is to promote collaboration, accessibility, and community engagement within the campus environment.
+The motivation for this project arises from two common challenges faced by students: limited access to affordable tutoring and underutilized personal talents. Many students need academic or technical assistance but cannot afford paid services, while others possess valuable skills that could benefit their peers. SkillSwap Campus addresses this gap by providing a centralized platform where students can offer skills, request help, and participate in mutually beneficial exchanges.
+The platform introduces a credit-based or hour-based exchange system, eliminating monetary transactions while ensuring fairness. A reputation-based rating and review system is incorporated to promote trust, accountability, and quality interactions among users.
+Primary stakeholders include students, who serve as the main users, and administrators, who oversee system integrity and enforce guidelines. The application falls within the domains of Education Technology (EdTech) and campus community platforms.
+By enabling free skill exchange, SkillSwap Campus supports resume building, networking opportunities, reputation development, and collaborative learning, ultimately strengthening the university community.
