@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*"%>
+
 <html>
 <head>
   <title>SkillSwap Campus</title>
@@ -18,42 +19,19 @@
         <a href="login.jsp">Login</a>
         <a href="register.jsp">Register</a>
         <a href="listOfSkills.jsp">List of Skills</a>
-        <a href="addSkill.jsp">Add Skills</a>
+        <a href="addSkills.jsp">Add Skills</a>
         <a href="mySkills.jsp">My Skills</a>
     <% } %>
 </div>
 
-<h3>Here is a list of all the skills being offered.</h3>
+<h3>Add a skill you would like offer on this page!</h3>
 
-<table>
-    <tr>
-        <th>Skill_ID</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Experience_Level</th>
-        <th>Status</th>
-        <th>User_ID</th>
-        <th>Category_ID</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>Python Programming</td>
-        <td>Teach Python Basics</td>
-        <td>Intermediate</td>
-        <td>Active</td>
-        <td>1</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Calculus Tutoring</td>
-        <td>Help with calculus homework</td>
-        <td>Advanced</td>
-        <td>Active</td>
-        <td>4</td>
-        <td>1</td>
-    </tr>
-</table>
+<form action="addSkill.jsp" method="post">
+  <input type="text" name="title" placeholder="Skill Title" required />
+  <input type="text" name="category" placeholder="Category" required />
+  <textarea name="description" placeholder="Description"></textarea>
+  <button type="submit">Add Skill</button>
+</form>
 
 <style>
 body{

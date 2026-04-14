@@ -12,11 +12,14 @@
     <% if (session.getAttribute("userId") != null) { %>
         <a href="dashboard.jsp">Dashboard</a>
         <a href="listOfSkills.jsp">Browse Skills</a>
+        <a href="addSkills.jsp">Add Skills</a>
         <a href="<%= request.getContextPath() %>/logout">Logout</a>
     <% } else { %>
         <a href="login.jsp">Login</a>
         <a href="register.jsp">Register</a>
         <a href="listOfSkills.jsp">List of Skills</a>
+        <a href="addSkill.jsp">Add Skills</a>
+        <a href="mySkills.jsp">My Skills</a>
     <% } %>
 </div>
 

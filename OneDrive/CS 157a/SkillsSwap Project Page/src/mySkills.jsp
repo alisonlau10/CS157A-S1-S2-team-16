@@ -23,7 +23,7 @@
     <% } %>
 </div>
 
-<h3>Here is a list of all the skills being offered.</h3>
+<h3>Here are a list of skills you are currently offering</h3>
 
 <table>
     <tr>
