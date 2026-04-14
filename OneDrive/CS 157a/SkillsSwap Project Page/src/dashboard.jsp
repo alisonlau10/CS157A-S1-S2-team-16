@@ -3,7 +3,7 @@
 <%
     // Require login
     if (session.getAttribute("userId") == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/login.jsp");
         return;
     }
 

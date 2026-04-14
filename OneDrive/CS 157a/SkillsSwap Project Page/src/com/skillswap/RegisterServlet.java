@@ -3,6 +3,7 @@ package com.skillswap;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.security.MessageDigest;
 
@@ -128,8 +129,10 @@ public class RegisterServlet extends HttpServlet {
 
     private void forwardWithError(HttpServletRequest req, HttpServletResponse resp, String error)
             throws ServletException, IOException {
-        req.setAttribute("error", error);
-        req.getRequestDispatcher("/src/register.jsp").forward(req, resp);
+        // Redirect instead of forward so the browser URL stays on register.jsp
+        // (prevents relative links from resolving against the servlet URL)
+        resp.sendRedirect(req.getContextPath()
+            + "/src/register.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
     }
 
     private boolean isBlank(String s) {

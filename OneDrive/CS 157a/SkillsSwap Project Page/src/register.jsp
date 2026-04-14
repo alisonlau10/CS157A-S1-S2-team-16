@@ -2,10 +2,10 @@
 <%
     // Redirect to dashboard if already logged in
     if (session.getAttribute("userId") != null) {
-        response.sendRedirect("dashboard.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/dashboard.jsp");
         return;
     }
-    String error   = (String) request.getAttribute("error");
+    String error   = request.getParameter("error");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -167,10 +167,10 @@
 
 <nav class="navbar">
     <span class="brand">SkillSwap Campus</span>
-    <a href="SkillSwap.jsp">Home</a>
-    <a href="login.jsp">Login</a>
-    <a href="register.jsp" class="active">Register</a>
-    <a href="listOfSkills.jsp">Browse Skills</a>
+    <a href="<%= request.getContextPath() %>/src/SkillSwap.jsp">Home</a>
+    <a href="<%= request.getContextPath() %>/src/login.jsp">Login</a>
+    <a href="<%= request.getContextPath() %>/src/register.jsp" class="active">Register</a>
+    <a href="<%= request.getContextPath() %>/src/listOfSkills.jsp">Browse Skills</a>
 </nav>
 
 <div class="page-wrapper">
@@ -232,7 +232,7 @@
         </form>
 
         <p class="form-footer">
-            Already have an account? <a href="login.jsp">Log in here</a>
+            Already have an account? <a href="<%= request.getContextPath() %>/src/login.jsp">Log in here</a>
         </p>
     </div>
 </div>

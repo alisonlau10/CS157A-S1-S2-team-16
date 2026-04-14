@@ -2,10 +2,10 @@
 <%
     // Redirect to dashboard if already logged in
     if (session.getAttribute("userId") != null) {
-        response.sendRedirect("dashboard.jsp");
+        response.sendRedirect(request.getContextPath() + "/src/dashboard.jsp");
         return;
     }
-    String error      = (String) request.getAttribute("error");
+    String error      = request.getParameter("error");
     String registered = request.getParameter("registered");
     String loggedOut  = request.getParameter("logout");
 %>
@@ -204,7 +204,7 @@
         </form>
 
         <p class="form-footer">
-            Don't have an account? <a href="register.jsp">Sign up here</a>
+            Don't have an account? <a href="<%= request.getContextPath() %>/src/register.jsp">Sign up here</a>
         </p>
     </div>
 </div>
