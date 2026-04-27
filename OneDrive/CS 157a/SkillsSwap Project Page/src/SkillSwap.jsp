@@ -18,8 +18,6 @@
         <a href="login.jsp">Login</a>
         <a href="register.jsp">Register</a>
         <a href="listOfSkills.jsp">List of Skills</a>
-        <a href="addSkill.jsp">Add Skills</a>
-        <a href="mySkills.jsp">My Skills</a>
     <% } %>
 </div>
 

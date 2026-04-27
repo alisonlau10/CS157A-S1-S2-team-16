@@ -5,7 +5,7 @@
         response.sendRedirect("dashboard.jsp");
         return;
     }
-    String error      = (String) request.getAttribute("error");
+    String error      = request.getParameter("error");
     String registered = request.getParameter("registered");
     String loggedOut  = request.getParameter("logout");
 %>

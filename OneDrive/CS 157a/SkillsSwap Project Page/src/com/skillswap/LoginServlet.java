@@ -3,6 +3,7 @@ package com.skillswap;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.security.MessageDigest;
 
@@ -81,8 +82,8 @@ public class LoginServlet extends HttpServlet {
 
     private void forwardWithError(HttpServletRequest req, HttpServletResponse resp, String error)
             throws ServletException, IOException {
-        req.setAttribute("error", error);
-        req.getRequestDispatcher("/src/login.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath()
+            + "/src/login.jsp?error=" + URLEncoder.encode(error, "UTF-8"));
     }
 
     private boolean isBlank(String s) {

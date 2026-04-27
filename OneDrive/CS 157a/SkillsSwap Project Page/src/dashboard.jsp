@@ -33,7 +33,7 @@
             creditBalance = rs.getInt("credit_balance");
         }
     } catch (Exception e) {
-        // dashboard still renders; DB errors shown gracefully
+        e.printStackTrace();
     } finally {
         com.skillswap.DatabaseUtil.close(conn, stmt, rs);
     }
@@ -261,7 +261,7 @@
         <div class="action-label">Add a Skill</div>
         <div class="action-desc">List a new skill you can teach or share</div>
     </a>
-    <a class="action-card" href="#">
+    <a class="action-card" href="<%= request.getContextPath() %>/trackExchangeStatus">
         <div class="action-icon">&#128257;</div>
         <div class="action-label">My Exchanges</div>
         <div class="action-desc">Track pending, active, and completed exchanges</div>

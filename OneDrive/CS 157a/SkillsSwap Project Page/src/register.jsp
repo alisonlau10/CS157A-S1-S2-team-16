@@ -5,7 +5,7 @@
         response.sendRedirect("dashboard.jsp");
         return;
     }
-    String error   = (String) request.getAttribute("error");
+    String error   = request.getParameter("error");
 %>
 <!DOCTYPE html>
 <html lang="en">

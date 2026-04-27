@@ -14,22 +14,15 @@ public class DatabaseUtil {
         // Load credentials from WEB-INF/db.properties so each developer
         // keeps their own local password out of version control.
         Properties props = new Properties();
-        String propsPath = System.getProperty("catalina.base")
-            + "/webapps/skillswap/WEB-INF/db.properties";
-
-        try (InputStream in = new FileInputStream(propsPath)) {
+        // db.properties lives in WEB-INF/classes/ (on the classpath)
+        try (InputStream in = DatabaseUtil.class
+                .getClassLoader().getResourceAsStream("db.properties")) {
+            if (in == null) throw new IOException("db.properties not found on classpath");
             props.load(in);
         } catch (IOException e) {
-            // Fall back to a local file path (useful during development)
-            String fallback = System.getProperty("user.home")
-                + "/skillswap_db.properties";
-            try (InputStream in2 = new FileInputStream(fallback)) {
-                props.load(in2);
-            } catch (IOException ex) {
-                throw new RuntimeException(
-                    "Cannot find db.properties. Copy WEB-INF/db.properties.example "
-                    + "to WEB-INF/db.properties and fill in your credentials.", ex);
-            }
+            throw new RuntimeException(
+                "Cannot load db.properties. Copy WEB-INF/db.properties.example "
+                + "to WEB-INF/classes/db.properties and fill in your credentials.", e);
         }
 
         DB_URL      = props.getProperty("db.url");
