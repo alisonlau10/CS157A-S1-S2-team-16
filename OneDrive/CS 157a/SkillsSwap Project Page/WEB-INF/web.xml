@@ -35,6 +35,33 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>com.skillswap.DeleteAccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/deleteAccount</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <servlet-class>com.skillswap.UpdateProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <url-pattern>/updateProfile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TrackExchangeStatusServlet</servlet-name>
+        <servlet-class>com.skillswap.TrackExchangeStatusServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TrackExchangeStatusServlet</servlet-name>
+        <url-pattern>/trackExchangeStatus</url-pattern>
+    </servlet-mapping>
+
     <!-- Session configuration -->
     <session-config>
         <session-timeout>60</session-timeout> <!-- 60 minutes -->

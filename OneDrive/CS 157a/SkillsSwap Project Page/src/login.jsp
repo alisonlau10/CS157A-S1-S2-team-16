@@ -8,6 +8,7 @@
     String error      = request.getParameter("error");
     String registered = request.getParameter("registered");
     String loggedOut  = request.getParameter("logout");
+    String deleted    = request.getParameter("deleted");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -183,6 +184,10 @@
         <% } else if ("true".equals(loggedOut)) { %>
             <div class="alert alert-info">
                 You have been logged out successfully.
+            </div>
+        <% } else if ("true".equals(deleted)) { %>
+            <div class="alert alert-info">
+                Your account has been permanently deleted.
             </div>
         <% } %>
 

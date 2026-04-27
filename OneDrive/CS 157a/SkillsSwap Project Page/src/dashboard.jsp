@@ -271,7 +271,7 @@
         <div class="action-label">Messages</div>
         <div class="action-desc">View and send messages to other students</div>
     </a>
-    <a class="action-card" href="#">
+    <a class="action-card" href="editProfile.jsp">
         <div class="action-icon">&#128100;</div>
         <div class="action-label">Edit Profile</div>
         <div class="action-desc">Update your bio, skills, and availability</div>
@@ -299,6 +299,23 @@
         <span class="info-key">Role</span>
         <span class="info-val"><%= role %></span>
     </div>
+</div>
+
+<!-- Account Actions -->
+<div style="margin-top: 24px; display: flex; gap: 14px; flex-wrap: wrap;">
+    <a href="editProfile.jsp"
+       style="padding: 10px 22px; background: #AA336A; color: white; border-radius: 12px;
+              font-weight: bold; text-decoration: none; font-size: 0.95rem; transition: background 0.2s;"
+       onmouseover="this.style.background='#8e2a58'" onmouseout="this.style.background='#AA336A'">
+        &#9998; Edit Profile
+    </a>
+    <a href="deleteAccount.jsp"
+       style="padding: 10px 22px; background: #fff; color: #c0392b; border: 2px solid #f5c6cb;
+              border-radius: 12px; font-weight: bold; text-decoration: none; font-size: 0.95rem;
+              transition: background 0.2s;"
+       onmouseover="this.style.background='#fde8e8'" onmouseout="this.style.background='#fff'">
+        &#128465; Delete Account
+    </a>
 </div>
 
 </body>
