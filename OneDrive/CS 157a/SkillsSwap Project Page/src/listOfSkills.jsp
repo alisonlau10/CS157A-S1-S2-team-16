@@ -36,23 +36,31 @@
         <th>Category_ID</th>
     </tr>
     <tr>
-        <td>1</td>
-        <td>Python Programming</td>
-        <td>Teach Python Basics</td>
-        <td>Intermediate</td>
-        <td>Active</td>
-        <td>1</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Calculus Tutoring</td>
-        <td>Help with calculus homework</td>
-        <td>Advanced</td>
-        <td>Active</td>
-        <td>4</td>
-        <td>1</td>
-    </tr>
+    <td>1</td>
+    <td>
+        <a href="<%= request.getContextPath() %>/viewStudentProfile?userId=1">
+            Python Programming
+        </a>
+    </td>
+    <td>Teach Python Basics</td>
+    <td>Intermediate</td>
+    <td>Active</td>
+    <td>1</td>
+    <td>2</td>
+</tr>
+<tr>
+    <td>2</td>
+    <td>
+        <a href="<%= request.getContextPath() %>/viewStudentProfile?userId=4">
+            Calculus Tutoring
+        </a>
+    </td>
+    <td>Help with calculus homework</td>
+    <td>Advanced</td>
+    <td>Active</td>
+    <td>4</td>
+    <td>1</td>
+</tr>
 </table>
 
 <style>
