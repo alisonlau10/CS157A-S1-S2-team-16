@@ -29,10 +29,29 @@
         }
 
         .navbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
             background: #F8C8DC;
             border-radius: 20px;
             padding: 15px 25px;
             margin-bottom: 30px;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #2c7be5;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .navbar a:hover { background: rgba(255,255,255,0.6); }
+        .navbar .btn-logout {
+            background: #AA336A;
+            color: white;
+            padding: 7px 16px;
+            border-radius: 10px;
+            margin-left: auto;
         }
 
         .brand {
@@ -88,6 +107,14 @@
     <div class="container">
         <div class="navbar">
             <span class="brand">SkillSwap Campus</span>
+            <a href="SkillSwap.jsp">Home</a>
+            <a href="dashboard.jsp">Dashboard</a>
+            <a href="listOfSkills.jsp">Browse Skills</a>
+            <a href="mySkills.jsp">My Skills</a>
+            <a href="addSkill.jsp">Add Skill</a>
+            <a href="messages.jsp">Messages</a>
+            <a href="<%= request.getContextPath() %>/trackExchangeStatus">My Exchanges</a>
+            <a href="<%= request.getContextPath() %>/logout" class="btn-logout">Log Out</a>
         </div>
 
         <div class="profile-card">

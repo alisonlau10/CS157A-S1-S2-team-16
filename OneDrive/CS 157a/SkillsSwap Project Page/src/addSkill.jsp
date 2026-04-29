@@ -13,14 +13,15 @@
     <% if (session.getAttribute("userId") != null) { %>
         <a href="dashboard.jsp">Dashboard</a>
         <a href="listOfSkills.jsp">Browse Skills</a>
-        <a href="addSkills.jsp">Add Skills</a>
+        <a href="mySkills.jsp">My Skills</a>
+        <a href="addSkill.jsp">Add Skill</a>
+        <a href="messages.jsp">Messages</a>
+        <a href="<%= request.getContextPath() %>/trackExchangeStatus">My Exchanges</a>
         <a href="<%= request.getContextPath() %>/logout">Logout</a>
     <% } else { %>
+        <a href="listOfSkills.jsp">Browse Skills</a>
         <a href="login.jsp">Login</a>
         <a href="register.jsp">Register</a>
-        <a href="listOfSkills.jsp">List of Skills</a>
-        <a href="addSkills.jsp">Add Skills</a>
-        <a href="mySkills.jsp">My Skills</a>
     <% } %>
 </div>
 

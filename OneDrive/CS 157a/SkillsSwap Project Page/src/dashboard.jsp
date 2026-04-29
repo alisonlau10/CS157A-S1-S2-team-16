@@ -219,6 +219,10 @@
     <span class="brand">SkillSwap Campus</span>
     <a href="SkillSwap.jsp">Home</a>
     <a href="listOfSkills.jsp">Browse Skills</a>
+    <a href="mySkills.jsp">My Skills</a>
+    <a href="addSkill.jsp">Add Skill</a>
+    <a href="messages.jsp">Messages</a>
+    <a href="<%= request.getContextPath() %>/trackExchangeStatus">My Exchanges</a>
     <a href="<%= request.getContextPath() %>/logout" class="btn-logout">Log Out</a>
 </nav>
 
