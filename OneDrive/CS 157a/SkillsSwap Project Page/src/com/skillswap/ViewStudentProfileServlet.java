@@ -5,10 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet("/viewStudentProfile")
 public class ViewStudentProfileServlet extends HttpServlet {
 
     @Override

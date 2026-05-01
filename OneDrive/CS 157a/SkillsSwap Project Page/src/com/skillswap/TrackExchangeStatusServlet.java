@@ -6,10 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet("/trackExchangeStatus")
 public class TrackExchangeStatusServlet extends HttpServlet {
 
     @Override

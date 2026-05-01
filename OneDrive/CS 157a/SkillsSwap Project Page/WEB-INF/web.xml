@@ -62,6 +62,15 @@
         <url-pattern>/trackExchangeStatus</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ViewStudentProfileServlet</servlet-name>
+        <servlet-class>com.skillswap.ViewStudentProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewStudentProfileServlet</servlet-name>
+        <url-pattern>/viewStudentProfile</url-pattern>
+    </servlet-mapping>
+
     <!-- Session configuration -->
     <session-config>
         <session-timeout>60</session-timeout> <!-- 60 minutes -->
