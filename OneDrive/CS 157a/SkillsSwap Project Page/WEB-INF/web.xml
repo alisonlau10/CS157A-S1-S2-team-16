@@ -53,23 +53,7 @@
         <url-pattern>/updateProfile</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>TrackExchangeStatusServlet</servlet-name>
-        <servlet-class>com.skillswap.TrackExchangeStatusServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TrackExchangeStatusServlet</servlet-name>
-        <url-pattern>/trackExchangeStatus</url-pattern>
-    </servlet-mapping>
 
-    <servlet>
-        <servlet-name>ViewStudentProfileServlet</servlet-name>
-        <servlet-class>com.skillswap.ViewStudentProfileServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ViewStudentProfileServlet</servlet-name>
-        <url-pattern>/viewStudentProfile</url-pattern>
-    </servlet-mapping>
 
     <!-- Session configuration -->
     <session-config>

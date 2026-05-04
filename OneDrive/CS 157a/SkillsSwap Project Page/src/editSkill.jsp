@@ -1,8 +1,35 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*" %>
 <%
     if (session.getAttribute("userId") == null) {
         response.sendRedirect("login.jsp");
         return;
+    }
+
+    int skillId = Integer.parseInt(request.getParameter("skillId"));
+
+    String title = "";
+    String description = "";
+    String experienceLevel = "";
+
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        conn = com.skillswap.DatabaseUtil.getConnection();
+        stmt = conn.prepareStatement(
+            "SELECT Title, Description, Experience_Level FROM Skills WHERE Skill_ID = ?"
+        );
+        stmt.setInt(1, skillId);
+        rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            title = rs.getString("Title");
+            description = rs.getString("Description");
+            experienceLevel = rs.getString("Experience_Level");
+        }
+    } finally {
+        com.skillswap.DatabaseUtil.close(conn, stmt, rs);
     }
 %>
 
@@ -10,8 +37,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Skill</title>
-
+    <title>Edit Skill</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,31 +121,29 @@
 
 <body>
     <div class="container">
-        <h1>Add New Skill</h1>
-        <p>List a skill you can teach or share with other students.</p>
+        <h1>Edit Skill</h1>
+        <p>Update the details for a skill you currently offer.</p>
 
-        <form action="<%= request.getContextPath() %>/addSkill" method="post">
+        <form action="<%= request.getContextPath() %>/updateSkill" method="post">
+            <input type="hidden" name="skillId" value="<%= skillId %>">
+
             <label>Skill Title</label>
-            <input type="text" name="title" placeholder="e.g. Excel Skills" required>
+            <input type="text" name="title" value="<%= title %>" required>
 
             <label>Description</label>
-            <textarea name="description" placeholder="Describe what you can teach" required></textarea>
+            <textarea name="description" required><%= description %></textarea>
 
             <label>Experience Level</label>
             <select name="experienceLevel" required>
-                <option value="">Select Level</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
+                <option value="Beginner" <%= "Beginner".equals(experienceLevel) ? "selected" : "" %>>Beginner</option>
+                <option value="Intermediate" <%= "Intermediate".equals(experienceLevel) ? "selected" : "" %>>Intermediate</option>
+                <option value="Advanced" <%= "Advanced".equals(experienceLevel) ? "selected" : "" %>>Advanced</option>
             </select>
 
-            <label>Category ID</label>
-            <input type="number" name="categoryId" placeholder="e.g. 1" required>
-
-            <button type="submit">Add Skill</button>
+            <button type="submit">Save Changes</button>
         </form>
 
-        <a class="back-link" href="dashboard.jsp">Back to Dashboard</a>
+        <a class="back-link" href="mySkills.jsp">Back to My Skills</a>
     </div>
 </body>
 </html>

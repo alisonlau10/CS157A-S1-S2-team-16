@@ -246,10 +246,10 @@
         <div class="stat-value">0</div>
         <div class="stat-label">Active Exchanges</div>
     </div>
-    <div class="stat-card">
+    <a class="stat-card" href="mySkills.jsp" style="text-decoration:none; color:inherit;">
         <div class="stat-value">0</div>
         <div class="stat-label">Skills Offered</div>
-    </div>
+    </a>
 </div>
 
 <!-- Quick Actions -->
@@ -260,10 +260,15 @@
         <div class="action-label">Browse Skills</div>
         <div class="action-desc">Discover skills offered by other students</div>
     </a>
-    <a class="action-card" href="#">
+    <a class="action-card" href="addSkill.jsp">
         <div class="action-icon">&#10133;</div>
         <div class="action-label">Add a Skill</div>
         <div class="action-desc">List a new skill you can teach or share</div>
+    </a>
+    <a class="action-card" href="mySkills.jsp">
+         <div class="action-icon">&#128218;</div>
+         <div class="action-label">My Skills</div>
+         <div class="action-desc">Edit or delete your offered skills</div>
     </a>
     <a class="action-card" href="<%= request.getContextPath() %>/trackExchangeStatus">
         <div class="action-icon">&#128257;</div>
