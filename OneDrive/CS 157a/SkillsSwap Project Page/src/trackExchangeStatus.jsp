@@ -47,6 +47,7 @@
             border-collapse: collapse;
             overflow: hidden;
             border-radius: 12px;
+            table-layout: fixed;
         }
 
         th {
@@ -75,24 +76,27 @@
             font-size: 0.85rem;
         }
 
-        .complete-btn {
-            background: #AA336A;
-            color: white;
+        .action-btn {
+            display: inline-block;
             border: none;
             border-radius: 10px;
-            padding: 8px 13px;
+            padding: 7px 12px;
             font-weight: bold;
+            font-size: 0.82rem;
             cursor: pointer;
+            text-decoration: none;
+            margin: 2px 2px 2px 0;
         }
+        .btn-complete  { background: #AA336A; color: white; }
+        .btn-complete:hover { background: #8e2a58; }
+        .btn-accept    { background: #2e7d32; color: white; }
+        .btn-accept:hover { background: #1b5e20; }
+        .btn-reject    { background: #fff; color: #c0392b; border: 2px solid #f5c6cb; }
+        .btn-reject:hover { background: #fde8e8; }
+        .btn-review    { background: #f5a623; color: white; }
+        .btn-review:hover { background: #d4891a; }
 
-        .complete-btn:hover {
-            background: #8e2a58;
-        }
-
-        .completed-badge {
-            color: #2e7d32;
-            font-weight: bold;
-        }
+        .completed-badge { color: #2e7d32; font-weight: bold; font-size: 0.88rem; }
 
         .back-link {
             display: inline-block;
@@ -138,7 +142,7 @@
                 conn = com.skillswap.DatabaseUtil.getConnection();
 
                 String sql =
-                    "SELECT er.Request_ID, " +
+                    "SELECT er.Request_ID, er.Sender_ID, er.Receiver_ID, " +
                     "rs.Title AS Requested_Skill, " +
                     "os.Title AS Offered_Skill, " +
                     "CASE WHEN er.Sender_ID = ? THEN u2.Full_Name ELSE u1.Full_Name END AS Other_Student, " +
@@ -160,11 +164,15 @@
 
                 while (rs.next()) {
                     hasRows = true;
-                    int requestId = rs.getInt("Request_ID");
+                    int requestId    = rs.getInt("Request_ID");
+                    int senderId     = rs.getInt("Sender_ID");
+                    int receiverId   = rs.getInt("Receiver_ID");
                     String requestedSkill = rs.getString("Requested_Skill");
-                    String offeredSkill = rs.getString("Offered_Skill");
-                    String otherStudent = rs.getString("Other_Student");
-                    String status = rs.getString("Status");
+                    String offeredSkill   = rs.getString("Offered_Skill");
+                    String otherStudent   = rs.getString("Other_Student");
+                    String status         = rs.getString("Status");
+                    boolean isReceiver    = (receiverId == userId);
+                    boolean isParticipant = (senderId == userId || receiverId == userId);
         %>
 
         <tr>
@@ -174,13 +182,36 @@
             <td><%= otherStudent %></td>
             <td><span class="status-badge"><%= status %></span></td>
             <td>
-                <% if (!"Completed".equalsIgnoreCase(status)) { %>
-                    <form action="<%= request.getContextPath() %>/completeExchange" method="post">
+                <%-- Accept / Reject: only receiver sees this for Pending requests --%>
+                <% if ("Pending".equalsIgnoreCase(status) && isReceiver) { %>
+                    <form action="<%= request.getContextPath() %>/respondExchange" method="post" style="display:inline">
                         <input type="hidden" name="requestId" value="<%= requestId %>">
-                        <button class="complete-btn" type="submit">Mark Completed</button>
+                        <input type="hidden" name="action"    value="accept">
+                        <button class="action-btn btn-accept" type="submit">Accept</button>
                     </form>
+                    <form action="<%= request.getContextPath() %>/respondExchange" method="post" style="display:inline">
+                        <input type="hidden" name="requestId" value="<%= requestId %>">
+                        <input type="hidden" name="action"    value="reject">
+                        <button class="action-btn btn-reject" type="submit">Reject</button>
+                    </form>
+
+                <%-- Mark Completed: either participant on Accepted / In Progress --%>
+                <% } else if (("Accepted".equalsIgnoreCase(status) || "In Progress".equalsIgnoreCase(status)) && isParticipant) { %>
+                    <form action="<%= request.getContextPath() %>/completeExchange" method="post" style="display:inline">
+                        <input type="hidden" name="requestId" value="<%= requestId %>">
+                        <button class="action-btn btn-complete" type="submit">Mark Completed</button>
+                    </form>
+
+                <%-- Leave Review: either participant on Completed --%>
+                <% } else if ("Completed".equalsIgnoreCase(status) && isParticipant) { %>
+                    <a class="action-btn btn-review"
+                       href="<%= request.getContextPath() %>/leaveReview?requestId=<%= requestId %>">
+                        Leave Review
+                    </a>
+                    <span class="completed-badge">&#10003; Done</span>
+
                 <% } else { %>
-                    <span class="completed-badge">Completed</span>
+                    <span style="color:#bbb; font-size:0.82rem;">—</span>
                 <% } %>
             </td>
         </tr>

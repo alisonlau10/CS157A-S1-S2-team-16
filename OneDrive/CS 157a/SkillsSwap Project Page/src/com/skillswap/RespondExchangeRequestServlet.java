@@ -5,7 +5,7 @@ import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-public class CompleteExchangeServlet extends HttpServlet {
+public class RespondExchangeRequestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -19,6 +19,9 @@ public class CompleteExchangeServlet extends HttpServlet {
 
         int userId    = (Integer) session.getAttribute("userId");
         int requestId = Integer.parseInt(request.getParameter("requestId"));
+        String action = request.getParameter("action"); // "accept" or "reject"
+
+        String newStatus = "accept".equalsIgnoreCase(action) ? "Accepted" : "Rejected";
 
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -26,20 +29,18 @@ public class CompleteExchangeServlet extends HttpServlet {
         try {
             conn = DatabaseUtil.getConnection();
 
-            // Either participant can mark an Accepted or In-Progress exchange as Completed
+            // Only the receiver may accept or reject a Pending request
             stmt = conn.prepareStatement(
-                "UPDATE Exchange_Requests SET Status = 'Completed' " +
-                "WHERE Request_ID = ? " +
-                "AND (Sender_ID = ? OR Receiver_ID = ?) " +
-                "AND Status IN ('Accepted', 'In Progress')"
+                "UPDATE Exchange_Requests SET Status = ? " +
+                "WHERE Request_ID = ? AND Receiver_ID = ? AND Status = 'Pending'"
             );
-            stmt.setInt(1, requestId);
-            stmt.setInt(2, userId);
+            stmt.setString(1, newStatus);
+            stmt.setInt(2, requestId);
             stmt.setInt(3, userId);
             stmt.executeUpdate();
 
         } catch (Exception e) {
-            throw new ServletException("Error completing exchange", e);
+            throw new ServletException("Error responding to exchange request", e);
         } finally {
             DatabaseUtil.close(conn, stmt);
         }

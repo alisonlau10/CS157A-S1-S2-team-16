@@ -53,7 +53,68 @@
         <url-pattern>/updateProfile</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ViewStudentProfileServlet</servlet-name>
+        <servlet-class>com.skillswap.ViewStudentProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewStudentProfileServlet</servlet-name>
+        <url-pattern>/viewStudentProfile</url-pattern>
+    </servlet-mapping>
 
+    <servlet>
+        <servlet-name>TrackExchangeStatusServlet</servlet-name>
+        <servlet-class>com.skillswap.TrackExchangeStatusServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TrackExchangeStatusServlet</servlet-name>
+        <url-pattern>/trackExchangeStatus</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchSkillsServlet</servlet-name>
+        <servlet-class>com.skillswap.SearchSkillsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchSkillsServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SendExchangeRequestServlet</servlet-name>
+        <servlet-class>com.skillswap.SendExchangeRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendExchangeRequestServlet</servlet-name>
+        <url-pattern>/sendExchangeRequest</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RespondExchangeRequestServlet</servlet-name>
+        <servlet-class>com.skillswap.RespondExchangeRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RespondExchangeRequestServlet</servlet-name>
+        <url-pattern>/respondExchange</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CompleteExchangeServlet</servlet-name>
+        <servlet-class>com.skillswap.CompleteExchangeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CompleteExchangeServlet</servlet-name>
+        <url-pattern>/completeExchange</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LeaveReviewServlet</servlet-name>
+        <servlet-class>com.skillswap.LeaveReviewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LeaveReviewServlet</servlet-name>
+        <url-pattern>/leaveReview</url-pattern>
+    </servlet-mapping>
 
     <!-- Session configuration -->
     <session-config>

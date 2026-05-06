@@ -255,7 +255,7 @@
 <!-- Quick Actions -->
 <h3 class="section-title">Quick Actions</h3>
 <div class="actions-grid">
-    <a class="action-card" href="listOfSkills.jsp">
+    <a class="action-card" href="<%= request.getContextPath() %>/search">
         <div class="action-icon">&#128269;</div>
         <div class="action-label">Browse Skills</div>
         <div class="action-desc">Discover skills offered by other students</div>
@@ -275,7 +275,7 @@
         <div class="action-label">My Exchanges</div>
         <div class="action-desc">Track pending, active, and completed exchanges</div>
     </a>
-    <a class="action-card" href="#">
+    <a class="action-card" href="messages.jsp">
         <div class="action-icon">&#128140;</div>
         <div class="action-label">Messages</div>
         <div class="action-desc">View and send messages to other students</div>
