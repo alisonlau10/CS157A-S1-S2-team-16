@@ -1,8 +1,24 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*" %>
 <%
     if (session.getAttribute("userId") == null) {
         response.sendRedirect("login.jsp");
         return;
+    }
+
+    // Load categories for dropdown
+    java.util.List<String[]> cats = new java.util.ArrayList<>();
+    Connection _conn = null; PreparedStatement _stmt = null; ResultSet _rs = null;
+    try {
+        _conn  = com.skillswap.DatabaseUtil.getConnection();
+        _stmt  = _conn.prepareStatement(
+            "SELECT Category_ID, Category_Name FROM Skill_Categories ORDER BY Category_Name");
+        _rs    = _stmt.executeQuery();
+        while (_rs.next())
+            cats.add(new String[]{ _rs.getString("Category_ID"), _rs.getString("Category_Name") });
+    } catch (Exception _e) {
+    } finally {
+        com.skillswap.DatabaseUtil.close(_conn, _stmt, _rs);
     }
 %>
 
@@ -113,13 +129,18 @@
                 <option value="Advanced">Advanced</option>
             </select>
 
-            <label>Category ID</label>
-            <input type="number" name="categoryId" placeholder="e.g. 1" required>
+            <label>Category</label>
+            <select name="categoryId" required>
+                <option value="">-- Select a category --</option>
+                <% for (String[] cat : cats) { %>
+                    <option value="<%= cat[0] %>"><%= cat[1] %></option>
+                <% } %>
+            </select>
 
             <button type="submit">Add Skill</button>
         </form>
 
-        <a class="back-link" href="dashboard.jsp">Back to Dashboard</a>
+        <a class="back-link" href="<%= request.getContextPath() %>/src/dashboard.jsp">Back to Dashboard</a>
     </div>
 </body>
 </html>

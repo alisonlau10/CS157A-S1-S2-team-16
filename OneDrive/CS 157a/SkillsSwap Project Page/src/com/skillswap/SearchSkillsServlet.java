@@ -18,6 +18,11 @@ public class SearchSkillsServlet extends HttpServlet {
         List<String[]> results    = new ArrayList<>();
         List<String[]> categories = loadCategories();
 
+        boolean hasKeyword   = keyword != null && !keyword.trim().isEmpty();
+        boolean hasCategory  = categoryIdParam != null && !categoryIdParam.trim().isEmpty()
+                               && !categoryIdParam.equals("0");
+        int categoryId = hasCategory ? Integer.parseInt(categoryIdParam) : 0;
+
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -34,25 +39,19 @@ public class SearchSkillsServlet extends HttpServlet {
                 "WHERE sk.Status = 'Active' "
             );
 
-            List<Object> params = new ArrayList<>();
-
-            if (keyword != null && !keyword.trim().isEmpty()) {
-                sql.append("AND (sk.Title LIKE ? OR sk.Description LIKE ?) ");
-                params.add("%" + keyword.trim() + "%");
-                params.add("%" + keyword.trim() + "%");
-            }
-
-            if (categoryIdParam != null && !categoryIdParam.trim().isEmpty()
-                    && !categoryIdParam.equals("0")) {
-                sql.append("AND sk.Category_ID = ? ");
-                params.add(Integer.parseInt(categoryIdParam));
-            }
-
+            if (hasKeyword)  sql.append("AND (sk.Title LIKE ? OR sk.Description LIKE ?) ");
+            if (hasCategory) sql.append("AND sk.Category_ID = ? ");
             sql.append("ORDER BY sk.Title ASC");
 
             stmt = conn.prepareStatement(sql.toString());
-            for (int i = 0; i < params.size(); i++) {
-                stmt.setObject(i + 1, params.get(i));
+            int idx = 1;
+            if (hasKeyword) {
+                String kw = "%" + keyword.trim() + "%";
+                stmt.setString(idx++, kw);
+                stmt.setString(idx++, kw);
+            }
+            if (hasCategory) {
+                stmt.setInt(idx++, categoryId);
             }
 
             rs = stmt.executeQuery();

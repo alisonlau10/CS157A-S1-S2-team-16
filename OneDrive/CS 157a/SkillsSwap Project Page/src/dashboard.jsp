@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*, java.util.*" %>
 <%
-    // Require login
     if (session.getAttribute("userId") == null) {
         response.sendRedirect("login.jsp");
         return;
@@ -11,27 +10,64 @@
     String userName = (String)  session.getAttribute("userName");
     String role     = (String)  session.getAttribute("role");
 
-    // Fetch student details from DB
-    int    creditBalance = 0;
-    String bio           = "";
-    String major         = "";
+    int    creditBalance   = 0;
+    String bio             = "";
+    String skillsWanted    = "";
+    String major           = "";
+    String profilePicture  = "";
+    String availability    = "";
+    double avgRating       = 0;
+    int    reviewCount     = 0;
+    List<String> skillsOffered = new ArrayList<>();
 
     Connection conn = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
     try {
         conn = com.skillswap.DatabaseUtil.getConnection();
+
+        // Profile
         stmt = conn.prepareStatement(
-            "SELECT u.major, s.bio, s.credit_balance "
-            + "FROM users u JOIN students s ON u.user_id = s.user_id "
-            + "WHERE u.user_id = ?");
+            "SELECT u.Major, s.Bio, s.Credit_Balance, s.Profile_Picture, s.Availability_Schedule " +
+            "FROM Users u JOIN Students s ON u.User_ID = s.User_ID WHERE u.User_ID = ?");
         stmt.setInt(1, userId);
         rs = stmt.executeQuery();
         if (rs.next()) {
-            major         = rs.getString("major") != null ? rs.getString("major") : "";
-            bio           = rs.getString("bio")   != null ? rs.getString("bio")   : "";
-            creditBalance = rs.getInt("credit_balance");
+            major          = rs.getString("Major")                != null ? rs.getString("Major")                 : "";
+            profilePicture = rs.getString("Profile_Picture")      != null ? rs.getString("Profile_Picture")       : "";
+            availability   = rs.getString("Availability_Schedule") != null ? rs.getString("Availability_Schedule") : "";
+            creditBalance  = rs.getInt("Credit_Balance");
+            String rawBio  = rs.getString("Bio") != null ? rs.getString("Bio") : "";
+            // Split skills wanted out of bio
+            String DELIM = "\n---Skills Wanted: ";
+            if (rawBio.contains(DELIM)) {
+                int idx    = rawBio.indexOf(DELIM);
+                skillsWanted = rawBio.substring(idx + DELIM.length()).trim();
+                bio          = rawBio.substring(0, idx).trim();
+            } else {
+                bio = rawBio.trim();
+            }
         }
+        com.skillswap.DatabaseUtil.close(null, stmt, rs);
+
+        // Active skills offered
+        stmt = conn.prepareStatement(
+            "SELECT Title FROM Skills WHERE User_ID = ? AND Status = 'Active' ORDER BY Title");
+        stmt.setInt(1, userId);
+        rs = stmt.executeQuery();
+        while (rs.next()) skillsOffered.add(rs.getString("Title"));
+        com.skillswap.DatabaseUtil.close(null, stmt, rs);
+
+        // Average rating received
+        stmt = conn.prepareStatement(
+            "SELECT COALESCE(AVG(Rating),0) AS avg_r, COUNT(*) AS cnt FROM Reviews WHERE Reviewee_ID = ?");
+        stmt.setInt(1, userId);
+        rs = stmt.executeQuery();
+        if (rs.next()) {
+            avgRating   = rs.getDouble("avg_r");
+            reviewCount = rs.getInt("cnt");
+        }
+
     } catch (Exception e) {
         e.printStackTrace();
     } finally {
@@ -242,14 +278,21 @@
         <div class="stat-value"><%= creditBalance %></div>
         <div class="stat-label">Credit Balance</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-value">0</div>
-        <div class="stat-label">Active Exchanges</div>
-    </div>
-    <a class="stat-card" href="mySkills.jsp" style="text-decoration:none; color:inherit;">
-        <div class="stat-value">0</div>
+    <a class="stat-card" href="<%= request.getContextPath() %>/src/mySkills.jsp" style="text-decoration:none; color:inherit;">
+        <div class="stat-value"><%= skillsOffered.size() %></div>
         <div class="stat-label">Skills Offered</div>
     </a>
+    <div class="stat-card">
+        <%
+            String ratingDisplay = reviewCount == 0 ? "—"
+                : String.format("%.1f", avgRating);
+        %>
+        <div class="stat-value" style="font-size:1.6rem;">
+            <%= ratingDisplay %>
+            <% if (reviewCount > 0) { %><span style="font-size:1rem;color:#f5a623;">&#9733;</span><% } %>
+        </div>
+        <div class="stat-label">Avg Rating (<%= reviewCount %> review<%= reviewCount != 1 ? "s" : "" %>)</div>
+    </div>
 </div>
 
 <!-- Quick Actions -->
@@ -290,20 +333,47 @@
 <!-- Account Info -->
 <h3 class="section-title">Account Info</h3>
 <div class="info-card">
+    <% if (!profilePicture.isEmpty()) { %>
     <div class="info-row">
-        <span class="info-key">Name</span>
+        <span class="info-key">Profile Picture</span>
+        <span class="info-val">
+            <img src="<%= profilePicture %>" alt="Profile"
+                 style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #F3CFC6;"
+                 onerror="this.style.display='none'">
+        </span>
+    </div>
+    <% } %>
+    <div class="info-row">
+        <span class="info-key">Full Name</span>
         <span class="info-val"><%= userName %></span>
     </div>
     <div class="info-row">
         <span class="info-key">Major</span>
         <span class="info-val"><%= major.isEmpty() ? "—" : major %></span>
     </div>
-    <% if (!bio.isEmpty()) { %>
     <div class="info-row">
         <span class="info-key">Bio</span>
-        <span class="info-val"><%= bio %></span>
+        <span class="info-val"><%= bio.isEmpty() ? "—" : bio %></span>
     </div>
-    <% } %>
+    <div class="info-row">
+        <span class="info-key">Availability</span>
+        <span class="info-val"><%= availability.isEmpty() ? "—" : availability %></span>
+    </div>
+    <div class="info-row">
+        <span class="info-key">Skills I Offer</span>
+        <span class="info-val">
+            <% if (skillsOffered.isEmpty()) { %>—<% } else {
+                for (int i = 0; i < skillsOffered.size(); i++) {
+                    if (i > 0) out.print(", ");
+                    out.print(skillsOffered.get(i));
+                }
+            } %>
+        </span>
+    </div>
+    <div class="info-row">
+        <span class="info-key">Skills I Want</span>
+        <span class="info-val"><%= skillsWanted.isEmpty() ? "—" : skillsWanted %></span>
+    </div>
     <div class="info-row">
         <span class="info-key">Role</span>
         <span class="info-val"><%= role %></span>

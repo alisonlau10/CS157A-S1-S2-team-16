@@ -67,14 +67,34 @@ public class LeaveReviewServlet extends HttpServlet {
             rs.close();
             stmt.close();
 
-            // Check if this user already left a review for this exchange
+            // Check if THIS user already reviewed this exchange
             stmt = conn.prepareStatement(
-                "SELECT Review_ID FROM Reviews WHERE Request_ID = ? AND Reviewer_ID = ?"
+                "SELECT Rating, Comment FROM Reviews WHERE Request_ID = ? AND Reviewer_ID = ?"
             );
             stmt.setInt(1, requestId);
             stmt.setInt(2, userId);
             rs = stmt.executeQuery();
             boolean alreadyReviewed = rs.next();
+            if (alreadyReviewed) {
+                request.setAttribute("existingRating",  rs.getInt("Rating"));
+                request.setAttribute("existingComment", rs.getString("Comment"));
+            }
+            rs.close(); stmt.close();
+
+            // Fetch the OTHER participant's review (if they already reviewed)
+            stmt = conn.prepareStatement(
+                "SELECT r.Rating, r.Comment, u.Full_Name AS Reviewer_Name " +
+                "FROM Reviews r JOIN Users u ON r.Reviewer_ID = u.User_ID " +
+                "WHERE r.Request_ID = ? AND r.Reviewer_ID != ?"
+            );
+            stmt.setInt(1, requestId);
+            stmt.setInt(2, userId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                request.setAttribute("partnerRating",       rs.getInt("Rating"));
+                request.setAttribute("partnerComment",      rs.getString("Comment"));
+                request.setAttribute("partnerReviewerName", rs.getString("Reviewer_Name"));
+            }
 
             request.setAttribute("requestId",       requestId);
             request.setAttribute("revieweeId",      revieweeId);

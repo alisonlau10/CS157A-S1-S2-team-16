@@ -2,6 +2,7 @@ package com.skillswap;
 
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -102,6 +103,18 @@ public class SendExchangeRequestServlet extends HttpServlet {
         int offeredSkillId   = Integer.parseInt(request.getParameter("offeredSkillId"));
         String preferredDate = request.getParameter("preferredDate");
         String preferredTime = request.getParameter("preferredTime");
+
+        // Server-side: reject past dates
+        if (preferredDate != null && !preferredDate.isEmpty()) {
+            try {
+                LocalDate chosen = LocalDate.parse(preferredDate);
+                if (chosen.isBefore(LocalDate.now())) {
+                    response.sendRedirect(request.getContextPath()
+                        + "/sendExchangeRequest?skillId=" + requestedSkillId + "&error=past");
+                    return;
+                }
+            } catch (Exception ignored) {}
+        }
 
         Connection conn = null;
         PreparedStatement stmt = null;

@@ -106,11 +106,11 @@
 
 <nav class="navbar">
     <span class="brand">SkillSwap Campus</span>
-    <a href="dashboard.jsp">Dashboard</a>
+    <a href="<%= request.getContextPath() %>/src/dashboard.jsp">Dashboard</a>
     <a href="<%= request.getContextPath() %>/search">Browse Skills</a>
-    <a href="mySkills.jsp">My Skills</a>
+    <a href="<%= request.getContextPath() %>/src/mySkills.jsp">My Skills</a>
     <a href="<%= request.getContextPath() %>/trackExchangeStatus">My Exchanges</a>
-    <a href="messages.jsp">Messages</a>
+    <a href="<%= request.getContextPath() %>/src/messages.jsp">Messages</a>
     <a href="<%= request.getContextPath() %>/logout" class="btn-logout">Log Out</a>
 </nav>
 

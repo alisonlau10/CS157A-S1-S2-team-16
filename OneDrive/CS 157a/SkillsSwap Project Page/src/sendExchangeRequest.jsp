@@ -1,4 +1,4 @@
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.*, java.time.LocalDate" %>
 <%
     if (session.getAttribute("userId") == null) {
         response.sendRedirect("login.jsp");
@@ -13,6 +13,9 @@
     String receiverId          = (String) request.getAttribute("receiverId");
     List<String[]> mySkills    = (List<String[]>) request.getAttribute("mySkills");
     String error               = (String) request.getAttribute("error");
+    if (error == null && "past".equals(request.getParameter("error"))) {
+        error = "Please choose today or a future date.";
+    }
     if (mySkills == null) mySkills = new ArrayList<>();
 %>
 <!DOCTYPE html>
@@ -96,11 +99,11 @@
 
 <nav class="navbar">
     <span class="brand">SkillSwap Campus</span>
-    <a href="dashboard.jsp">Dashboard</a>
+    <a href="<%= request.getContextPath() %>/src/dashboard.jsp">Dashboard</a>
     <a href="<%= request.getContextPath() %>/search">Browse Skills</a>
-    <a href="mySkills.jsp">My Skills</a>
+    <a href="<%= request.getContextPath() %>/src/mySkills.jsp">My Skills</a>
     <a href="<%= request.getContextPath() %>/trackExchangeStatus">My Exchanges</a>
-    <a href="messages.jsp">Messages</a>
+    <a href="<%= request.getContextPath() %>/src/messages.jsp">Messages</a>
     <a href="<%= request.getContextPath() %>/logout" class="btn-logout">Log Out</a>
 </nav>
 
@@ -144,7 +147,8 @@
             <div class="row-2">
                 <div>
                     <label for="preferredDate">Preferred Date</label>
-                    <input type="date" id="preferredDate" name="preferredDate">
+                    <input type="date" id="preferredDate" name="preferredDate"
+                           min="<%= LocalDate.now().toString() %>">
                 </div>
                 <div>
                     <label for="preferredTime">Preferred Time</label>
