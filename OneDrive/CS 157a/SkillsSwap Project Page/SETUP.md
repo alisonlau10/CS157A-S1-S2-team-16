@@ -44,9 +44,9 @@ bash setup.sh
 
 It will:
 - Create `WEB-INF/db.properties` with your local MySQL password (gitignored — never pushed)
-- Import the `skillswap_campus` database
-- Compile the Java servlets
-- Register the app with Tomcat
+- Import the `skillswap_campus` database (10 tables + seed data)
+- Compile all Java servlets to `WEB-INF/classes/`
+- Register the app with Tomcat via a context file
 - Start Tomcat
 
 ### Step 4 — Open in your browser
@@ -56,6 +56,9 @@ It will:
 | Home | http://localhost:8080/skillswap/src/SkillSwap.jsp |
 | Register | http://localhost:8080/skillswap/src/register.jsp |
 | Login | http://localhost:8080/skillswap/src/login.jsp |
+| Dashboard | http://localhost:8080/skillswap/src/dashboard.jsp |
+| Browse Skills | http://localhost:8080/skillswap/src/listOfSkills.jsp |
+| My Exchanges | http://localhost:8080/skillswap/trackExchangeStatus |
 
 ---
 
@@ -88,6 +91,12 @@ javac \
   "src/com/skillswap/"*.java
 ```
 
+Then copy `db.properties` back to the classpath:
+
+```bash
+cp WEB-INF/db.properties WEB-INF/classes/db.properties
+```
+
 > JSP changes (`.jsp` files) take effect immediately on refresh — no recompile needed.
 
 ---
@@ -97,21 +106,37 @@ javac \
 ```
 SkillsSwap Project Page/
 ├── src/
-│   ├── com/skillswap/          ← Java servlet source files
-│   │   ├── DatabaseUtil.java   ← DB connection (reads from db.properties)
-│   │   ├── RegisterServlet.java
-│   │   ├── LoginServlet.java
-│   │   └── LogoutServlet.java
+│   ├── com/skillswap/              ← Java servlet source files
+│   │   ├── DatabaseUtil.java       ← DB connection utility
+│   │   ├── RegisterServlet.java    ← FR 1 — Register Account
+│   │   ├── LoginServlet.java       ← FR 2 — Account Login
+│   │   ├── LogoutServlet.java      ← FR 3 — Account Logout
+│   │   ├── DeleteAccountServlet.java  ← FR 4 — Delete Account
+│   │   ├── UpdateProfileServlet.java  ← FR 5 — Manage Profile
+│   │   ├── ViewStudentProfileServlet.java ← FR 6 — Perform Search
+│   │   ├── TrackExchangeStatusServlet.java ← FR 7/8 — Exchange Requests
+│   │   ├── CompleteExchangeServlet.java    ← FR 9 — Complete Exchange
+│   │   ├── AddSkillServlet.java
+│   │   ├── UpdateSkillServlet.java
+│   │   └── DeleteSkillServlet.java
 │   ├── SkillSwap.jsp           ← Home page
 │   ├── register.jsp            ← Registration form
 │   ├── login.jsp               ← Login form
 │   ├── dashboard.jsp           ← Student dashboard (post-login)
-│   └── listOfSkills.jsp        ← Browse all skills
+│   ├── editProfile.jsp         ← Edit profile form
+│   ├── deleteAccount.jsp       ← Delete account confirmation
+│   ├── listOfSkills.jsp        ← Browse all skills
+│   ├── trackExchangeStatus.jsp ← My Exchanges page
+│   ├── viewStudentProfile.jsp  ← View another student's profile
+│   ├── addSkill.jsp
+│   ├── editSkill.jsp
+│   ├── mySkills.jsp
+│   └── messages.jsp
 ├── WEB-INF/
 │   ├── web.xml                 ← Servlet mappings
 │   ├── db.properties.example   ← Template — copy to db.properties
 │   └── db.properties           ← YOUR local credentials (gitignored)
-├── skillswap_campus.sql        ← Full database schema + seed data
+├── skillswap_campus.sql        ← Full database schema + seed data (10 tables)
 └── setup.sh                    ← First-time setup script
 ```
 
@@ -126,6 +151,8 @@ SkillsSwap Project Page/
 | User | root |
 | Password | *(your local MySQL password — set in db.properties)* |
 
+**Tables:** Activity_Log, Admins, Exchange_Requests, Messages, Notifications, Reviews, Skill_Categories, Skills, Students, Users
+
 To browse the database directly:
 
 ```bash
@@ -134,10 +161,13 @@ To browse the database directly:
 
 Useful queries:
 ```sql
+SHOW TABLES;
 SELECT * FROM users;
 SELECT * FROM students;
-SELECT * FROM skills;
-SELECT * FROM exchange_requests;
+SELECT * FROM skills WHERE status = 'Active';
+SELECT * FROM exchange_requests ORDER BY created_at DESC;
+SELECT * FROM reviews;
+SELECT * FROM activity_log ORDER BY timestamp DESC;
 ```
 
 ---
@@ -145,10 +175,10 @@ SELECT * FROM exchange_requests;
 ## Troubleshooting
 
 **"Cannot find db.properties"**  
-Copy the template and fill in your password:
+Copy the template, fill in your password, and copy to the classpath:
 ```bash
 cp WEB-INF/db.properties.example WEB-INF/db.properties
-# Then edit db.properties and set db.password=YOUR_PASSWORD
+cp WEB-INF/db.properties WEB-INF/classes/db.properties
 ```
 
 **"Access denied for user root"**  
@@ -165,3 +195,6 @@ Another Tomcat is already running. Stop it first:
 
 **Servlet changes not showing**  
 Recompile (see "After pulling new code" above), then restart Tomcat.
+
+**404 on /register, /login, or /trackExchangeStatus**  
+Check that `skillswap.xml` in Tomcat's `conf/Catalina/localhost/` points to the correct absolute path of the project folder.
