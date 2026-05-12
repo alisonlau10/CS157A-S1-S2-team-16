@@ -116,6 +116,36 @@
         <url-pattern>/leaveReview</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+    <servlet-name>SendMessageServlet</servlet-name>
+    <servlet-class>com.skillswap.SendMessageServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SendMessageServlet</servlet-name>
+    <url-pattern>/sendMessage</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>DeleteUserServlet</servlet-name>
+    <servlet-class>com.skillswap.DeleteUserServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>DeleteUserServlet</servlet-name>
+    <url-pattern>/deleteUser</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>DeleteReviewServlet</servlet-name>
+    <servlet-class>com.skillswap.DeleteReviewServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>DeleteReviewServlet</servlet-name>
+    <url-pattern>/deleteReview</url-pattern>
+</servlet-mapping>
+
     <!-- Session configuration -->
     <session-config>
         <session-timeout>60</session-timeout> <!-- 60 minutes -->

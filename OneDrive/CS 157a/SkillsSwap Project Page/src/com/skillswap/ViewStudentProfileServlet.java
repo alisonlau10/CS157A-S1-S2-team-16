@@ -31,7 +31,7 @@ public class ViewStudentProfileServlet extends HttpServlet {
 
             String sql =
                 "SELECT u.Full_Name, u.Major, s.Bio, s.Availability_Schedule, " +
-                "sk.Title, sk.Description, sk.Experience_Level " +
+                "sk.Skill_ID, sk.Title, sk.Description, sk.Experience_Level " +
                 "FROM Users u " +
                 "JOIN Students s ON u.User_ID = s.User_ID " +
                 "LEFT JOIN Skills sk ON u.User_ID = sk.User_ID " +
@@ -42,6 +42,7 @@ public class ViewStudentProfileServlet extends HttpServlet {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
+                request.setAttribute("viewedUserId", userId);
                 request.setAttribute("fullName", rs.getString("Full_Name"));
                 request.setAttribute("major", rs.getString("Major"));
                 request.setAttribute("bio", rs.getString("Bio"));
@@ -49,6 +50,7 @@ public class ViewStudentProfileServlet extends HttpServlet {
                 request.setAttribute("skillTitle", rs.getString("Title"));
                 request.setAttribute("skillDescription", rs.getString("Description"));
                 request.setAttribute("experienceLevel", rs.getString("Experience_Level"));
+                request.setAttribute("skillId", rs.getInt("Skill_ID"));
 
                 request.getRequestDispatcher("/src/viewStudentProfile.jsp").forward(request, response);
             } else {
