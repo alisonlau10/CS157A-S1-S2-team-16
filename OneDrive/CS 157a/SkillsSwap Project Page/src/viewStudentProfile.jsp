@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%
     String fullName = (String) request.getAttribute("fullName");
     String major = (String) request.getAttribute("major");
@@ -7,15 +8,16 @@
     String skillTitle = (String) request.getAttribute("skillTitle");
     String skillDescription = (String) request.getAttribute("skillDescription");
     String experienceLevel = (String) request.getAttribute("experienceLevel");
+    String viewedUserId = String.valueOf(request.getAttribute("viewedUserId"));
+    String skillId = String.valueOf(request.getAttribute("skillId"));
 %>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Skill Profile</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,15 +39,19 @@
             padding: 15px 25px;
             margin-bottom: 30px;
         }
+
         .navbar a {
             text-decoration: none;
             color: #2c7be5;
             font-weight: bold;
             padding: 6px 12px;
             border-radius: 8px;
-            transition: background 0.2s;
         }
-        .navbar a:hover { background: rgba(255,255,255,0.6); }
+
+        .navbar a:hover {
+            background: rgba(255,255,255,0.6);
+        }
+
         .navbar .btn-logout {
             background: #AA336A;
             color: white;
@@ -72,7 +78,7 @@
         h2 {
             color: #7a2d3b;
             font-family: cursive;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .row {
@@ -84,52 +90,73 @@
             color: #555;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: white;
+        .btn {
+            padding: 10px 18px;
             background: #AA336A;
-            padding: 10px 16px;
+            color: white;
+            border: none;
             border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
         }
 
-        .back-link:hover {
+        .btn:hover {
             background: #8e2a58;
+        }
+
+        .btn-secondary {
+            margin-top: 20px;
+            display: inline-block;
         }
     </style>
 </head>
+
 <body>
-    <h1>VIEW PROFILE PAGE IS WORKING</h1>
-    <p>Name value: <%= fullName %></p>
-    <p>Skill value: <%= skillTitle %></p>
-    
-    <div class="container">
-        <div class="navbar">
-            <span class="brand">SkillSwap Campus</span>
-            <a href="SkillSwap.jsp">Home</a>
-            <a href="dashboard.jsp">Dashboard</a>
-            <a href="listOfSkills.jsp">Browse Skills</a>
-            <a href="mySkills.jsp">My Skills</a>
-            <a href="addSkill.jsp">Add Skill</a>
-            <a href="messages.jsp">Messages</a>
-            <a href="<%= request.getContextPath() %>/trackExchangeStatus">My Exchanges</a>
-            <a href="<%= request.getContextPath() %>/logout" class="btn-logout">Log Out</a>
-        </div>
 
-        <div class="profile-card">
-            <h2>Student Skill Profile</h2>
+<div class="container">
 
-            <div class="row"><span class="label">Name:</span> <%= fullName %></div>
-            <div class="row"><span class="label">Major:</span> <%= major %></div>
-            <div class="row"><span class="label">Bio:</span> <%= bio %></div>
-            <div class="row"><span class="label">Availability:</span> <%= availability %></div>
-            <div class="row"><span class="label">Skill Title:</span> <%= skillTitle %></div>
-            <div class="row"><span class="label">Skill Description:</span> <%= skillDescription %></div>
-            <div class="row"><span class="label">Experience Level:</span> <%= experienceLevel %></div>
-
-            <a class="back-link" href="listOfSkills.jsp">Back to Skills</a>
-        </div>
+    <div class="navbar">
+        <span class="brand">SkillSwap Campus</span>
+        <a href="SkillSwap.jsp">Home</a>
+        <a href="dashboard.jsp">Dashboard</a>
+        <a href="<%= request.getContextPath() %>/search">Browse Skills</a>
+        <a href="mySkills.jsp">My Skills</a>
+        <a href="addSkill.jsp">Add Skill</a>
+        <a href="<%= request.getContextPath() %>/src/messages.jsp">Messages</a>
+        <a href="<%= request.getContextPath() %>/trackExchangeStatus">My Exchanges</a>
+        <a href="<%= request.getContextPath() %>/logout" class="btn-logout">Log Out</a>
     </div>
+
+    <div class="profile-card">
+        <h2>Student Skill Profile</h2>
+
+        <!-- MESSAGE BUTTON -->
+        <div style="margin-bottom: 20px;">
+            <a href="<%= request.getContextPath() %>/src/messages.jsp?partnerId=<%= viewedUserId %>" class="btn">
+                💬 Message
+            </a>
+
+            <a href="<%= request.getContextPath() %>/sendExchangeRequest?skillId=<%= skillId %>" class="btn" style="margin-left:10px;">
+                🔁 Request Exchange
+            </a>
+        </div>
+
+        <div class="row"><span class="label">Name:</span> <%= fullName %></div>
+        <div class="row"><span class="label">Major:</span> <%= major %></div>
+        <div class="row"><span class="label">Bio:</span> <%= bio %></div>
+        <div class="row"><span class="label">Availability:</span> <%= availability %></div>
+        <div class="row"><span class="label">Skill Title:</span> <%= skillTitle %></div>
+        <div class="row"><span class="label">Skill Description:</span> <%= skillDescription %></div>
+        <div class="row"><span class="label">Experience Level:</span> <%= experienceLevel %></div>
+
+        <!-- BACK BUTTON -->
+        <a href="<%= request.getContextPath() %>/search" class="btn btn-secondary">
+            Back to Skills
+        </a>
+    </div>
+
+</div>
+
 </body>
 </html>
